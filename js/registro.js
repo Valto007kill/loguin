@@ -1,3 +1,46 @@
+const form = document.querySelector(".form");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const nameInput = document.querySelector('input[name="name"]').value.trim();
+  const emailInput = document.querySelector('input[name="email"]').value.trim();
+  const passwordInput = document
+    .querySelector('input[name="password"]')
+    .value.trim();
+
+  if (!nameInput || !emailInput || !passwordInput) {
+    alert("Por favor, complete todos los campos");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost/tu_ruta/registro.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: nameInput,
+        email: emailInput,
+        password: passwordInput,
+      }),
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      alert("Registro exitoso");
+      window.location.href = "inicio.html";
+    } else {
+      alert(result.message);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Ocurrió un error al registrar al usuario.");
+  }
+});
+
+/*
 // Seleccionar elementos del DOM
 const form = document.querySelector(".form");
 const nameInput = document.querySelector('input[type="text"]');
@@ -28,3 +71,4 @@ form.addEventListener("submit", (e) => {
   // Redireccionar a la página de inicio
   window.location.href = "inicio.html";
 });
+*/
